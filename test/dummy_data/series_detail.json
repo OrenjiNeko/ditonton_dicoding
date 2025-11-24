@@ -1,0 +1,51 @@
+{
+    "adult": false,
+    "backdropPath": "/dummy.jpg",
+    "firstAirDate": "2025-10-26",
+    "genres": [
+        {
+            "id": 1,
+            "name": "genre 1"
+        },
+        {
+            "id": 2,
+            "name": "genre 2"
+        }
+    ],
+    "homepage": "homepage url",
+    "id": 1,
+    "inProduction": true,
+    "languages": [
+        "id",
+        "en"
+    ],
+    "lastAirDate": "2025-12-12",
+    "name": "series name",
+    "numberOfEpisodes": "12",
+    "numberOfSeasons": "1",
+    "originCountry": [
+        "ID"
+    ],
+    "originalLanguage": "id",
+    "originalName": "seriesn original name",
+    "overview": "overview text",
+    "popularity": 100.0,
+    "posterPath": "/dummy.jpg",
+    "seasons": [
+        {
+            "airDate": "2025-11-11",
+            "episodeCount": 6,
+            "id": 1,
+            "name": "season 1",
+            "overview": "season 1 overview",
+            "posterPath": "/dummy.jpg",
+            "seasonNumber": 1,
+            "voteAverage": 8.0
+        }
+    ],
+    "status": "series status",
+    "tagline": "tagline text",
+    "type": "series type",
+    "voteAverage": 7.5,
+    "voteCount": 100
+}
