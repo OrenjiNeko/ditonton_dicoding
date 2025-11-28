@@ -20,7 +20,8 @@ void main() {
 
   setUp(() {
     mockHttpClient = MockHttpClient();
-    dataSource = MovieRemoteDataSourceImpl(client: mockHttpClient);
+    dataSource =
+        MovieRemoteDataSourceImpl(client: mockHttpClient, useSSL: false);
   });
 
   group('get Now Playing Movies', () {

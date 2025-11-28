@@ -267,12 +267,12 @@ void init() {
 
   // data sources
   locator.registerLazySingleton<MovieRemoteDataSource>(
-      () => MovieRemoteDataSourceImpl(client: locator()));
+      () => MovieRemoteDataSourceImpl(client: locator(), useSSL: true));
   locator.registerLazySingleton<MovieLocalDataSource>(
       () => MovieLocalDataSourceImpl(databaseHelper: locator()));
 
   locator.registerLazySingleton<SeriesRemoteDataSource>(
-      () => SeriesRemoteDataSourceImpl(client: locator()));
+      () => SeriesRemoteDataSourceImpl(client: locator(), useSSL: true));
   locator.registerLazySingleton<SeriesLocalDataSource>(
       () => SeriesLocalDataSourceImpl(databaseHelper: locator()));
 

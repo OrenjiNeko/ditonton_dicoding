@@ -20,7 +20,8 @@ void main() {
 
   setUp(() {
     mockHttpClient = MockHttpClient();
-    dataSource = SeriesRemoteDataSourceImpl(client: mockHttpClient);
+    dataSource =
+        SeriesRemoteDataSourceImpl(client: mockHttpClient, useSSL: false);
   });
 
   group(
