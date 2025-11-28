@@ -1,8 +1,7 @@
-import 'package:ditonton/common/state_enum.dart';
-import 'package:ditonton/presentation/provider/airing_today_series_notifier.dart';
+import 'package:ditonton/bloc/get_now_playing_series/get_now_playing_series_bloc.dart';
 import 'package:ditonton/presentation/widgets/series_card_list.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AiringTodaySeriesPage extends StatefulWidget {
   static const ROUTE_NAME = '/airing-today-series';
@@ -15,9 +14,7 @@ class _AiringTodaySeriesPageState extends State<AiringTodaySeriesPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(() =>
-        Provider.of<AiringTodaySeriesNotifier>(context, listen: false)
-            .fetchNowPlayingSeries());
+    context.read<GetNowPlayingSeriesBloc>().add(FetchNowPlayingSeries());
   }
 
   @override
@@ -28,24 +25,28 @@ class _AiringTodaySeriesPageState extends State<AiringTodaySeriesPage> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Consumer<AiringTodaySeriesNotifier>(
-          builder: (context, data, child) {
-            if (data.state == RequestState.Loading) {
+        child: BlocBuilder<GetNowPlayingSeriesBloc, GetNowPlayingSeriesState>(
+          builder: (context, state) {
+            if (state is GetNowPlayingSeriesLoading) {
               return Center(
                 child: CircularProgressIndicator(),
               );
-            } else if (data.state == RequestState.Loaded) {
+            } else if (state is GetNowPlayingSeriesHasData) {
               return ListView.builder(
                 itemBuilder: (context, index) {
-                  final series = data.series[index];
+                  final series = state.result[index];
                   return SeriesCard(series);
                 },
-                itemCount: data.series.length,
+                itemCount: state.result.length,
+              );
+            } else if (state is GetNowPlayingSeriesError) {
+              return Center(
+                key: Key('error_message'),
+                child: Text(state.message),
               );
             } else {
               return Center(
-                key: Key('error_message'),
-                child: Text(data.message),
+                child: Text("No Data"),
               );
             }
           },

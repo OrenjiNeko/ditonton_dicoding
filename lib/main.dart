@@ -1,3 +1,16 @@
+import 'package:ditonton/bloc/get_detail_movies/get_detail_movies_bloc.dart';
+import 'package:ditonton/bloc/get_detail_series/get_detail_series_bloc.dart';
+import 'package:ditonton/bloc/get_list_movies/get_list_movies_bloc.dart';
+import 'package:ditonton/bloc/get_list_series/get_list_series_bloc.dart';
+import 'package:ditonton/bloc/get_now_playing_series/get_now_playing_series_bloc.dart';
+import 'package:ditonton/bloc/get_popular_movies/get_popular_movies_bloc.dart';
+import 'package:ditonton/bloc/get_popular_series/get_popular_series_bloc.dart';
+import 'package:ditonton/bloc/get_top_rated_movie/get_top_rated_movie_bloc.dart';
+import 'package:ditonton/bloc/get_top_rated_series/get_top_rated_series_bloc.dart';
+import 'package:ditonton/bloc/get_watchlist_movies/get_watchlist_movies_bloc.dart';
+import 'package:ditonton/bloc/get_watchlist_series/get_watchlist_series_bloc.dart';
+import 'package:ditonton/bloc/search/search_bloc.dart';
+import 'package:ditonton/bloc/search_series/search_series_bloc.dart';
 import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/common/utils.dart';
 import 'package:ditonton/presentation/pages/about_page.dart';
@@ -29,6 +42,7 @@ import 'package:ditonton/presentation/provider/watchlist_movie_notifier.dart';
 import 'package:ditonton/presentation/provider/watchlist_series_notifier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
 import 'package:ditonton/injection.dart' as di;
 
@@ -43,46 +57,76 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         // Movies
-        ChangeNotifierProvider(
-          create: (_) => di.locator<MovieListNotifier>(),
+        // ChangeNotifierProvider(
+        //   create: (_) => di.locator<MovieListNotifier>(), //V
+        // ),
+        // ChangeNotifierProvider(
+        //   create: (_) => di.locator<MovieDetailNotifier>(), //V
+        // ),
+        // ChangeNotifierProvider(
+        //   create: (_) => di.locator<MovieSearchNotifier>(), //V
+        // ),
+        // ChangeNotifierProvider(
+        //   create: (_) => di.locator<TopRatedMoviesNotifier>(), //V
+        // ),
+        // ChangeNotifierProvider(
+        //   create: (_) => di.locator<PopularMoviesNotifier>(), //V
+        // ),
+        // ChangeNotifierProvider(
+        //   create: (_) => di.locator<WatchlistMovieNotifier>(), //V
+        // ),
+
+        //movie bloc
+        BlocProvider(
+          create: (_) => di.locator<SearchBloc>(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<MovieDetailNotifier>(),
+        BlocProvider(
+          create: (_) => di.locator<GetPopularMoviesBloc>(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<MovieSearchNotifier>(),
+        BlocProvider(create: (_) => di.locator<GetTopRatedMovieBloc>()),
+        BlocProvider(
+          create: (_) => di.locator<GetListMovieBloc>(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<TopRatedMoviesNotifier>(),
+        BlocProvider(
+          create: (_) => di.locator<GetWatchlistMoviesBloc>(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<PopularMoviesNotifier>(),
+        BlocProvider(create: (_) => di.locator<GetDetailMovieBloc>()),
+
+        //series bloc
+        BlocProvider(
+          create: (_) => di.locator<SearchSeriesBloc>(),
         ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<WatchlistMovieNotifier>(),
+        BlocProvider(create: (_) => di.locator<GetNowPlayingSeriesBloc>()),
+        BlocProvider(create: (_) => di.locator<GetPopularSeriesBloc>()),
+        BlocProvider(create: (_) => di.locator<GetTopRatedSeriesBloc>()),
+        BlocProvider(
+          create: (_) => di.locator<GetWatchlistSeriesBloc>(),
         ),
+        BlocProvider(create: (_) => di.locator<GetListSeriesBloc>()),
+        BlocProvider(create: (_) => di.locator<GetDetailSeriesBloc>()),
+
         // TV Series
-        ChangeNotifierProvider(
-          create: (_) => di.locator<SeriesListNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<SeriesDetailNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<SeriesSearchNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<TopRatedSeriesNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<PopularSeriesNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<AiringTodaySeriesNotifier>(),
-        ),
-        ChangeNotifierProvider(
-          create: (_) => di.locator<WatchlistSeriesNotifier>(),
-        ),
+        // ChangeNotifierProvider(
+        //   create: (_) => di.locator<SeriesListNotifier>(),
+        // ),
+        // ChangeNotifierProvider(
+        //   create: (_) => di.locator<SeriesDetailNotifier>(),
+        // ),
+        // ChangeNotifierProvider(
+        //   create: (_) => di.locator<SeriesSearchNotifier>(),
+        // ),
+        // ChangeNotifierProvider(
+        //   create: (_) => di.locator<TopRatedSeriesNotifier>(),
+        // ),
+        // ChangeNotifierProvider(
+        //   create: (_) => di.locator<PopularSeriesNotifier>(),
+        // ),
+        // ChangeNotifierProvider(
+        //   create: (_) => di.locator<AiringTodaySeriesNotifier>(),
+        // ),
+        // ChangeNotifierProvider(
+        //   create: (_) => di.locator<WatchlistSeriesNotifier>(),
+        // ),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

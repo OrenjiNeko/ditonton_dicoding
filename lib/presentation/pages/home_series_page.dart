@@ -1,18 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ditonton/bloc/get_list_series/get_list_series_bloc.dart';
 import 'package:ditonton/common/constants.dart';
 import 'package:ditonton/domain/entities/series.dart';
 import 'package:ditonton/presentation/pages/about_page.dart';
 import 'package:ditonton/presentation/pages/airing_today_series_page.dart';
 import 'package:ditonton/presentation/pages/popular_series_page.dart';
-import 'package:ditonton/common/state_enum.dart';
 import 'package:ditonton/presentation/pages/search_series_page.dart';
 import 'package:ditonton/presentation/pages/series_detail_page.dart';
 import 'package:ditonton/presentation/pages/top_rated_series_page.dart';
 import 'package:ditonton/presentation/pages/watchlist_movies_page.dart';
 import 'package:ditonton/presentation/pages/watchlist_series_page.dart';
-import 'package:ditonton/presentation/provider/series_list_notifier.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeSeriesPage extends StatefulWidget {
   @override
@@ -23,11 +22,9 @@ class _HomeSeriesPageState extends State<HomeSeriesPage> {
   @override
   void initState() {
     super.initState();
-    Future.microtask(
-        () => Provider.of<SeriesListNotifier>(context, listen: false)
-          ..fetchNowPlayingSeries()
-          ..fetchPopularSeries()
-          ..fetchTopRatedSeries());
+    context.read<GetListSeriesBloc>().add(FetchNowPlayingSeries());
+    context.read<GetListSeriesBloc>().add(FetchPopularSeries());
+    context.read<GetListSeriesBloc>().add(FetchTopRatedSeries());
   }
 
   @override
@@ -107,16 +104,22 @@ class _HomeSeriesPageState extends State<HomeSeriesPage> {
                 onTap: () =>
                     Navigator.pushNamed(context, PopularSeriesPage.ROUTE_NAME),
               ),
-              Consumer<SeriesListNotifier>(builder: (context, data, child) {
-                final state = data.popularSeriesState;
-                if (state == RequestState.Loading) {
+              BlocBuilder<GetListSeriesBloc, GetListSeriesState>(
+                  builder: (context, state) {
+                if (state is GetListSeriesLoading) {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
-                } else if (state == RequestState.Loaded) {
-                  return SeriesList(data.popularSeries);
+                } else if (state is GetListSeriesHasData) {
+                  return SeriesList(state.popularSeries);
+                } else if (state is GetListSeriesError) {
+                  return Center(
+                    child: Text(state.message),
+                  );
                 } else {
-                  return Text('Failed');
+                  return Center(
+                    child: Text("No Data"),
+                  );
                 }
               }),
               _buildSubHeading(
@@ -124,16 +127,22 @@ class _HomeSeriesPageState extends State<HomeSeriesPage> {
                 onTap: () =>
                     Navigator.pushNamed(context, TopRatedSeriesPage.ROUTE_NAME),
               ),
-              Consumer<SeriesListNotifier>(builder: (context, data, child) {
-                final state = data.topRatedSeriesState;
-                if (state == RequestState.Loading) {
+              BlocBuilder<GetListSeriesBloc, GetListSeriesState>(
+                  builder: (context, state) {
+                if (state is GetListSeriesLoading) {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
-                } else if (state == RequestState.Loaded) {
-                  return SeriesList(data.topRatedSeries);
+                } else if (state is GetListSeriesHasData) {
+                  return SeriesList(state.topRatedSeries);
+                } else if (state is GetListSeriesError) {
+                  return Center(
+                    child: Text(state.message),
+                  );
                 } else {
-                  return Text('Failed');
+                  return Center(
+                    child: Text("No Data"),
+                  );
                 }
               }),
               _buildSubHeading(
@@ -143,16 +152,22 @@ class _HomeSeriesPageState extends State<HomeSeriesPage> {
                       context, AiringTodaySeriesPage.ROUTE_NAME);
                 },
               ),
-              Consumer<SeriesListNotifier>(builder: (context, data, child) {
-                final state = data.nowPlayingState;
-                if (state == RequestState.Loading) {
+              BlocBuilder<GetListSeriesBloc, GetListSeriesState>(
+                  builder: (context, state) {
+                if (state is GetListSeriesLoading) {
                   return Center(
                     child: CircularProgressIndicator(),
                   );
-                } else if (state == RequestState.Loaded) {
-                  return SeriesList(data.nowPlayingSeries);
+                } else if (state is GetListSeriesHasData) {
+                  return SeriesList(state.nowPlayingSeries);
+                } else if (state is GetListSeriesError) {
+                  return Center(
+                    child: Text(state.message),
+                  );
                 } else {
-                  return Text('Failed');
+                  return Center(
+                    child: Text("No Data"),
+                  );
                 }
               }),
             ],
